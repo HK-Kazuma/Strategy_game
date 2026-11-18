@@ -25,3 +25,39 @@ export interface Hero {
   gear: { blade: number; tank: number; anchor: number };
   status: UnitStatus;
 }
+
+// ---- GameState（セーブされるのはこれだけ） ----
+import type { BaseState, DayReport } from '../base/types';
+
+export type Phase = 'morning' | 'day' | 'night';
+
+export interface LegacyBonus { kind: string; value: number }            // P5で具体化
+export interface RaidWarning { day: number }                            // P4で具体化
+export interface ExpeditionState { day: number }                        // P3で具体化
+export interface ChapterState { bossDefeated: boolean; wallWork: number } // P5で具体化
+export type DayLogEntry = DayReport;
+
+export interface MemorialEntry { captainId: string; name: string; type: CaptainType; day: number; legacy: LegacyBonus }
+
+export interface GameState {
+  version: 1;
+  seed: number;
+  day: number;
+  phase: Phase;
+  chapter: number;
+  resources: Resources;
+  civilians: number;
+  morale: number;
+  base: BaseState;
+  captains: Captain[];
+  soldiers: Soldier[];
+  squads: Squad[];
+  hero: Hero;
+  memorial: MemorialEntry[];
+  expedition: ExpeditionState | null;
+  raidWarning: RaidWarning | null;
+  log: DayLogEntry[];
+  trainingQueue: number;
+  lastRaidDay: number;
+  chapterState: ChapterState;
+}
